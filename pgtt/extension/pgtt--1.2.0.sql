@@ -173,7 +173,7 @@ BEGIN
 		-- current transaction.
 		EXECUTE format('CREATE POLICY pgtt_rls_transaction ON pgtt_schema.pgtt_%s USING (pgtt_sessid = get_session_id() AND xmin::text = txid_current()::text) WITH CHECK (true)', tb_name);
 		
-		-- ÉJÉXÉ^É}ÉCÉYÅFALTER TABLEí«â¡
+		-- „Ç´„Çπ„Çø„Éû„Ç§„Ç∫ÔºöALTER TABLEËøΩÂä†
 		EXECUTE format('ALTER TABLE pgtt_schema.pgtt_%s ADD COLUMN pgtt_txid text DEFAULT txid_current()', tb_name);
 		
 	END IF;
@@ -191,7 +191,7 @@ BEGIN
 	IF preserved THEN
 		EXECUTE format('CREATE VIEW %s WITH (security_barrier) AS SELECT %s from pgtt_schema.pgtt_%s WHERE pgtt_sessid=get_session_id()', tb_name, column_list, tb_name);
 	ELSE
-		-- ÉJÉXÉ^É}ÉCÉYÅF
+		-- „Ç´„Çπ„Çø„Éû„Ç§„Ç∫Ôºö
 		-- EXECUTE format('CREATE VIEW %s WITH (security_barrier) AS SELECT %s from pgtt_schema.pgtt_%s WHERE pgtt_sessid=get_session_id() AND xmin::text = txid_current()::text', tb_name, column_list, tb_name);
 		EXECUTE format('CREATE VIEW %s WITH (security_barrier) AS SELECT %s from pgtt_schema.pgtt_%s WHERE pgtt_sessid=get_session_id() AND %s.pgtt_txid = txid_current()::text', tb_name, column_list, tb_name);
 	END IF;
